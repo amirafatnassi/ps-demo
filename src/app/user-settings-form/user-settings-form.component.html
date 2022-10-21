@@ -11,10 +11,13 @@
         placeholder="name"
         [(ngModel)]="userSettings.name"
         #nameField="ngModel"
-        
+        required
         [class.field-error]="form.submitted && nameField.untouched"
       />
-      <div class="alert alert-danger" [hidden]="!form.submitted || nameField.valid">
+      <div
+        class="alert alert-danger"
+        [hidden]="!form.submitted || nameField.valid"
+      >
         Enter a name
       </div>
     </div>
@@ -27,40 +30,48 @@
       />
       <label for="email">E-mail</label>
     </div>
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-primary"
+        [(ngModel)]="singleModel"
+        btnCheckbox
+        btnCheckboxTrue="On"
+        btnCheckboxFalse="Off"
+        name="singleModel"
+      >
+        {{ singleModel }}
+      </button>
+    </div>
     <p>User Interface Style</p>
-    <div class="form-check form-group">
-      <input
-        class="form-check-input"
-        type="radio"
-        value="light"
-        id="lightInterface"
-        name="styleInterface"
+    <div class="form-group">
+      <label
+        class="btn btn-primary"
         [(ngModel)]="userSettings.interfaceStyle"
-      />
-      <label class="form-check-label" for="lightInterface">Light</label>
-    </div>
-    <div class="form-check form-group">
-      <input
-        class="form-check-input"
-        type="radio"
-        value="medium"
-        id="mediumInterface"
-        checked
         name="styleInterface"
+        btnRadio="light"
+        tabindex="0"
+        role="button"
+        >light</label
+      >
+      <label
+        class="btn btn-primary"
         [(ngModel)]="userSettings.interfaceStyle"
-      />
-      <label class="form-check-label" for="mediumInterface"> Medium </label>
-    </div>
-    <div class="form-check form-group">
-      <input
-        class="form-check-input"
-        type="radio"
-        value="medium"
-        id="darkInterface"
         name="styleInterface"
+        btnRadio="medium"
+        tabindex="0"
+        role="button"
+        >medium</label
+      >
+      <label
+        class="btn btn-primary"
         [(ngModel)]="userSettings.interfaceStyle"
-      />
-      <label class="form-check-label" for="darkInterface"> Dark </label>
+        name="styleInterface"
+        btnRadio="dark"
+        tabindex="0"
+        role="button"
+        >dark</label
+      >
     </div>
     <div class="form-group">
       <label for="subscriptionType">Subscription type</label>
@@ -71,11 +82,23 @@
         [(ngModel)]="userSettings.subscriptionType"
       >
         <option selected>Open this select menu</option>
-        <option>Monthly</option>
-        <option>Annual</option>
-        <option>Lifetime</option>
+        <option *ngFor="let type of subscriptionTypes | async">
+          {{ type }}
+        </option>
       </select>
     </div>
+    <div class="form-group">
+      <label for="stratDate">Start date</label>
+      <input
+        type="text"
+        placeholder="start date"
+        class="form-control"
+        [(ngModel)]="startDate" name="startDate" id="startDate"
+        bsDatepicker
+      />
+
+    </div>
+    start date: {{startDate}}
     <div class="form-group">
       <label for="notes">Notes</label>
       <textarea
@@ -86,9 +109,11 @@
         row="3"
         [(ngModel)]="userSettings.notes"
       ></textarea>
+
+      <div class="alert alert-danger" [hidden]="!postError">
+        {{ postErrorMessage }}
+      </div>
     </div>
     <button class="btn btn-primary">Send</button>
   </form>
 </div>
-
-{{ form.value | json }}
